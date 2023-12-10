@@ -21,7 +21,7 @@ public class JdbcSessionRepository implements SessionRepository {
     }
 
     @Override
-    public Optional<Session> findById(int sessionId) {
+    public Optional<Session> findById(Long sessionId) {
         String sql =
             "    select " +
                 "  id, " +

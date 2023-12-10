@@ -36,12 +36,12 @@ public class RegistrationRepositoryTest {
 
     @Test
     void 수강_신청_및_신청_내역_조회() {
-        int sessionId = 6;
+        Long sessionId = 6L;
         Session session = sessionRepository.findById(sessionId)
             .orElseThrow(() -> new NotFoundSessionException("강의 정보가 없습니다."));
         List<Registration> registrations = registrationRepository.findAllById(sessionId);
 
-        Registration registration = new Registration(session, NsUserTest.SANJIGI, new Payment(1L, 2L, 3L, 800000L));
+        Registration registration = new Registration(sessionId, NsUserTest.SANJIGI.getId(), new Payment(1L, 2L, 3L, 800000L));
         registrationRepository.save(registration);
         List<Registration> currentRegistrations = registrationRepository.findAllById(sessionId);
         assertThat(currentRegistrations).hasSize(registrations.size() + 1);
@@ -53,7 +53,7 @@ public class RegistrationRepositoryTest {
 
     @Test
     void 수강생_선발_처리() {
-        int registrationId = 13;
+        Long registrationId = 13L;
         Registration registration = registration(registrationId);
         assertThat(registration.selectionType()).isEqualTo(SelectionType.BEFORE_SELECTION);
 
@@ -65,7 +65,7 @@ public class RegistrationRepositoryTest {
 
     @Test
     void 수강생_승인_처리() {
-        int registrationId = 12;
+        Long registrationId = 12L;
         Registration registration = registration(registrationId);
         assertThat(registration.approvalType()).isEqualTo(ApprovalType.BEFORE_APPROVAL);
 
@@ -77,7 +77,7 @@ public class RegistrationRepositoryTest {
 
     @Test
     void 수강_취소_처리() {
-        int registrationId = 13;
+        Long registrationId = 13L;
         Registration registration = registration(registrationId);
         registration.cancel();
 
@@ -85,7 +85,7 @@ public class RegistrationRepositoryTest {
         assertThat(registrationRepository.findById(registrationId)).isEmpty();
     }
 
-    private Registration registration(int registrationId) {
+    private Registration registration(Long registrationId) {
         return registrationRepository.findById(registrationId)
             .orElseThrow(() -> new NotFoundRegistrationException("등록된 수강 정보가 없습니다."));
     }

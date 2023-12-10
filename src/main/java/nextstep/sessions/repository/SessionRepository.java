@@ -8,6 +8,6 @@ public interface SessionRepository {
 
     int save(Session session);
 
-    Optional<Session> findById(int sessionId);
+    Optional<Session> findById(Long sessionId);
 
 }

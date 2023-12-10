@@ -28,17 +28,17 @@ public class SessionRepositoryTest {
 
     @Test
     void 강의_생성_및_조회() {
-        EnrollmentInfo enrollmentInfo = new EnrollmentInfo(
+        Enrollment enrollment = new Enrollment(
             new SessionType(PaidType.PAID, 800000L, 10),
             new SessionState(SessionRunningState.RUNNING, SessionRecruitingState.RECRUITING)
         );
         OpenInfo openInfo = new OpenInfo(new Duration(LocalDateTime.now(), LocalDateTime.now().plusDays(10)));
-        Session session = new Session(enrollmentInfo, openInfo);
+        Session session = new Session(enrollment, openInfo);
 
         int count = sessionRepository.save(session);
         assertThat(count).isEqualTo(1);
 
-        Session savedSession = sessionRepository.findById(1)
+        Session savedSession = sessionRepository.findById(1L)
             .orElseThrow(() -> new NotFoundSessionException("강의 정보가 없습니다."));
         assertThat(savedSession.sessionRunningState()).isEqualTo(session.sessionRunningState());
         assertThat(savedSession.sessionRecruitingState()).isEqualTo(session.sessionRecruitingState());

@@ -1,10 +1,8 @@
 package nextstep.sessions.domain.data.registration;
 
 import nextstep.payments.domain.Payment;
-import nextstep.sessions.domain.data.session.Session;
 import nextstep.sessions.domain.data.session.UserPaymentInfo;
 import nextstep.sessions.domain.exception.*;
-import nextstep.users.domain.NsUser;
 
 public class Registration {
 
@@ -12,14 +10,14 @@ public class Registration {
     private final RegistrationInfo registrationInfo;
     private final RegistrationProcedure registrationProcedure;
 
-    public Registration(Session session, NsUser user, Payment payment) {
-        this.registrationInfo = new RegistrationInfo(session, new UserPaymentInfo(user, payment));
+    public Registration(Long sessionId, Long userId, Payment payment) {
+        this.registrationInfo = new RegistrationInfo(sessionId, new UserPaymentInfo(userId, payment));
         this.registrationProcedure = new RegistrationProcedure(SelectionType.BEFORE_SELECTION, ApprovalType.BEFORE_APPROVAL);
     }
 
-    public Registration(Session session, NsUser user, Payment payment, Long id, SelectionType selectionType, ApprovalType approvalType) {
-        this(id,
-            new RegistrationInfo(session, new UserPaymentInfo(user, payment)),
+    public Registration(Long sessionId, Long userId, Payment payment, Long registrationId, SelectionType selectionType, ApprovalType approvalType) {
+        this(registrationId,
+            new RegistrationInfo(sessionId, new UserPaymentInfo(userId, payment)),
             new RegistrationProcedure(selectionType, approvalType)
         );
     }
@@ -30,8 +28,8 @@ public class Registration {
         this.registrationProcedure = registrationProcedure;
     }
 
-    public boolean hasUser(NsUser user) {
-        return registrationInfo.hasEqualUser(user);
+    public boolean hasUser(Long userId) {
+        return registrationInfo.hasEqualUser(userId);
     }
 
     public long userId() {
@@ -87,10 +85,6 @@ public class Registration {
 
     public Payment payment() {
         return registrationInfo.payment();
-    }
-
-    public NsUser user() {
-        return registrationInfo.user();
     }
 
     public Long id() {

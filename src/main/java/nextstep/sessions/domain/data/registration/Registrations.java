@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import nextstep.sessions.domain.exception.CannotEnrollRegistrationException;
-import nextstep.users.domain.NsUser;
 
 public class Registrations {
 
@@ -18,14 +17,14 @@ public class Registrations {
         return registrations.size();
     }
 
-    public void validateDuplicateEnrollment(NsUser user) {
-        if (isExist(user)) {
+    public void validateDuplicateEnrollment(Long userId) {
+        if (isExist(userId)) {
             throw new CannotEnrollRegistrationException("이미 수강신청된 사용자 입니다.");
         }
     }
 
-    private boolean isExist(NsUser user) {
+    private boolean isExist(Long userId) {
         return registrations.stream()
-            .anyMatch(registration -> registration.hasUser(user));
+            .anyMatch(registration -> registration.hasUser(userId));
     }
 }

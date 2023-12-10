@@ -8,11 +8,11 @@ import nextstep.sessions.domain.data.registration.Registration;
 public class Session {
 
     private Long id;
-    private final EnrollmentInfo enrollmentInfo;
+    private final Enrollment enrollment;
     private OpenInfo openInfo;
 
-    public Session(EnrollmentInfo enrollmentInfo) {
-        this.enrollmentInfo = enrollmentInfo;
+    public Session(Enrollment enrollment) {
+        this.enrollment = enrollment;
     }
 
     public Session(
@@ -26,45 +26,45 @@ public class Session {
         LocalDateTime endDate
     ) {
         this(id,
-            new EnrollmentInfo(
+            new Enrollment(
                 new SessionType(paidType, fee, capacity),
                 new SessionState(sessionRunningStateState, sessionRecruitingState)),
             new OpenInfo(new Duration(startDate, endDate)));
     }
 
-    public Session(EnrollmentInfo enrollmentInfo, OpenInfo openInfo) {
-        this.enrollmentInfo = enrollmentInfo;
+    public Session(Enrollment enrollment, OpenInfo openInfo) {
+        this.enrollment = enrollment;
         this.openInfo = openInfo;
     }
 
-    public Session(Long id, EnrollmentInfo enrollmentInfo, OpenInfo openInfo) {
+    public Session(Long id, Enrollment enrollment, OpenInfo openInfo) {
         this.id = id;
-        this.enrollmentInfo = enrollmentInfo;
+        this.enrollment = enrollment;
         this.openInfo = openInfo;
     }
 
     public Enrollment enrollment(List<Registration> registrations) {
-        return new Enrollment(enrollmentInfo, registrations);
+        return new Enrollment(registrations);
     }
 
     public String paidType() {
-        return enrollmentInfo.paidType();
+        return enrollment.paidType();
     }
 
     public long fee() {
-        return enrollmentInfo.fee();
+        return enrollment.fee();
     }
 
     public int capacity() {
-        return enrollmentInfo.capacity();
+        return enrollment.capacity();
     }
 
     public String sessionRunningState() {
-        return enrollmentInfo.sessionRunningState();
+        return enrollment.sessionRunningState();
     }
 
     public String sessionRecruitingState() {
-        return enrollmentInfo.sessionRecruitingState();
+        return enrollment.sessionRecruitingState();
     }
 
     public LocalDateTime startDate() {

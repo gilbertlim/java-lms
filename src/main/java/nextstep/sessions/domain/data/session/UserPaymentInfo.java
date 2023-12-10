@@ -1,35 +1,27 @@
 package nextstep.sessions.domain.data.session;
 
 import nextstep.payments.domain.Payment;
-import nextstep.users.domain.NsUser;
 
 public class UserPaymentInfo {
 
-    private final NsUser user;
+    private final Long userId;
     private final Payment payment;
 
-    public UserPaymentInfo(NsUser user, Payment payment) {
-        this.user = user;
+    public UserPaymentInfo(Long userId, Payment payment) {
+        this.userId = userId;
         this.payment = payment;
     }
 
-    public boolean hasEqualUser(NsUser user) {
-        return user.isEqual(this.user);
+    public boolean hasEqualUser(Long userId) {
+        return userId.equals(this.userId);
     }
 
     public long userId() {
-        return user.getId();
-    }
-
-    public long paymentId() {
-        return payment.getId();
-    }
-
-    public NsUser user() {
-        return user;
+        return userId;
     }
 
     public Payment payment() {
         return payment;
     }
+
 }

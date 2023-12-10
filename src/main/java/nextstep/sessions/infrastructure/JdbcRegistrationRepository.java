@@ -10,7 +10,6 @@ import org.springframework.stereotype.Repository;
 import nextstep.payments.domain.Payment;
 import nextstep.sessions.domain.data.registration.*;
 import nextstep.sessions.repository.RegistrationRepository;
-import nextstep.users.domain.NsUser;
 
 @Repository("sessionRepository")
 public class JdbcRegistrationRepository implements RegistrationRepository {
@@ -22,22 +21,11 @@ public class JdbcRegistrationRepository implements RegistrationRepository {
     }
 
     @Override
-    public List<Registration> findAllById(int sessionId) {
+    public List<Registration> findAllById(Long sessionId) {
         String sql =
             "    select " +
                 "  s.id, " +
-                "  s.paid_type, " +
-                "  s.fee, " +
-                "  s.capacity, " +
-                "  s.running_state, " +
-                "  s.recruiting_state, " +
-                "  s.start_date, " +
-                "  s.end_date, " +
                 "  u.id, " +
-                "  u.user_id, " +
-                "  u.password, " +
-                "  u.name, " +
-                "  u.email, " +
                 "  r.id, " +
                 "  r.selection_type, " +
                 "  r.approval_type " +
@@ -69,22 +57,11 @@ public class JdbcRegistrationRepository implements RegistrationRepository {
     }
 
     @Override
-    public Optional<Registration> findById(int registrationId) {
+    public Optional<Registration> findById(Long registrationId) {
         String sql =
             "    select " +
                 "  s.id, " +
-                "  s.paid_type, " +
-                "  s.fee, " +
-                "  s.capacity, " +
-                "  s.running_state, " +
-                "  s.recruiting_state, " +
-                "  s.start_date, " +
-                "  s.end_date, " +
                 "  u.id, " +
-                "  u.user_id, " +
-                "  u.password, " +
-                "  u.name, " +
-                "  u.email, " +
                 "  r.id, " +
                 "  r.selection_type, " +
                 "  r.approval_type " +
@@ -124,7 +101,7 @@ public class JdbcRegistrationRepository implements RegistrationRepository {
     }
 
     @Override
-    public void deleteById(int registrationId) {
+    public void deleteById(Long registrationId) {
         String sql =
             "    delete from new_registration " +
                 "where id = ? ";
@@ -134,16 +111,12 @@ public class JdbcRegistrationRepository implements RegistrationRepository {
 
     private static RowMapper<Registration> registration() {
         return (rs, rowNum) -> new Registration(
-            JdbcSessionRepository.session(rs),
-            new NsUser(rs.getLong(9),
-                rs.getString(10),
-                rs.getString(11),
-                rs.getString(12),
-                rs.getNString(13)),
+            rs.getLong(1),
+            rs.getLong(2),
             new Payment(),
-            rs.getLong(14),
-            SelectionType.valueOfCode(rs.getString(15)),
-            ApprovalType.valueOfCode(rs.getString(16))
+            rs.getLong(3),
+            SelectionType.valueOfCode(rs.getString(4)),
+            ApprovalType.valueOfCode(rs.getString(5))
         );
     }
 }
